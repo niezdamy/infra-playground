@@ -7,3 +7,10 @@ Base64 coding
 ```
 echo -n mongouser | base64
 ```
+
+Ip of cluster
+
+```
+ minikube ip
+ kubectl get node -o wide
+```
