@@ -1,5 +1,106 @@
 # Handy docker commands:
 
+## Build
+
+Build image from Dockerfile in the current dir and tag image
+
+```bash
+docker build -t myimage:1.0 .
+```
+
+List and delete images
+
+```bash
+docker image ls
+docker image rm alpine:3.4
+```
+
+Pull and push images, retag
+
+```bash
+docker pull myimage:1.0
+docker tag myimage:1.0 myrepo/myimage:2.0
+docker push myrepo/myimage:2.0
+```
+
+Run a container from the Alpine version 3.9 image, name the running container “web” and expose port 5000 externally, mapped to port 80 inside the container
+
+```bash
+docker container run --name web -p 5000:80 alpine:3.9
+```
+
+Stop a running container through SIGTERM
+
+```bash
+docker container stop web
+```
+
+Stop a running container through SIGKILL
+
+```bash
+docker container kill web
+```
+
+Delete all running and stopped containers
+
+```bash
+docker container rm -f $(docker ps -aq)
+```
+
+Print the last 100 lines of a container’s logs
+
+```bash
+docker container logs --tail 100
+
+```
+
+List the running containers (add --all to include stopped containers)
+
+```bash
+docker container ls -all
+```
+
+List the networks
+
+```bash
+docker network ls
+```
+
+How to SSH into a running container
+
+```
+docker ps
+docker exec -it <container name> /bin/bash
+```
+
+Get IP Address
+
+```bash
+docker inspect $(dl) | grep -wm1 IPAddress | cut -d '"' -f 4
+
+docker inspect $(dl) | jq -r '.[0].NetworkSettings.IPAddress'
+
+```
+
+Docker stats for all containers
+
+```bash
+docker stats $(docker ps --format '{{.Names}}')
+```
+
+Gete port mapping
+
+```bash
+docker inspect -f '{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' <containername>
+
+```
+
+Clean Up
+
+```bash
+docker system prune --all --force
+```
+
 ## Dockerfile instructions:
 
 - [.dockerignore](https://docs.docker.com/engine/reference/builder/#dockerignore-file)
@@ -21,3 +122,7 @@
 - [LABEL](https://docs.docker.com/config/labels-custom-metadata/) apply key/value metadata to your images, containers, or daemons.
 - [SHELL](https://docs.docker.com/engine/reference/builder/#shell) override default shell is used by docker to run commands.
 - [HEALTHCHECK](https://docs.docker.com/engine/reference/builder/#healthcheck) tells docker how to test a container to check that it is still working.
+
+```
+
+```
