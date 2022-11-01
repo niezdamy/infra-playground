@@ -16,6 +16,9 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Workdir change
+        run: cd docker/05-go-dockerized
 
       - name: Fetch required Go modules
         run:  go mod download
