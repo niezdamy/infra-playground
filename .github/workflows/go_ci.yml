@@ -1,4 +1,4 @@
-name: Run GO app CI
+name: Run CI
 
 on:
   push:
@@ -16,19 +16,19 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Workdir change
-        run: cd docker/05-go-dockerized
 
       - name: Fetch required Go modules
+        working-directory: ./docker/05-go-dockerized
         run:  go mod download
 
       - name: Build
+        working-directory: ./docker/05-go-dockerized
         run:  go build -v ./...
 
       - name: Set up Docker Buildx
         id:   buildx
         uses: docker/setup-buildx-action@v1
+        
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -49,4 +49,5 @@ jobs:
           cache-to:   type=local,dest=/tmp/.buildx-cache
 
       - name: Run functional tests
+        working-directory: ./docker/05-go-dockerized
         run:  go test -v ./...
