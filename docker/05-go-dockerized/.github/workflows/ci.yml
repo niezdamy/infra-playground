@@ -1,9 +1,13 @@
-name: Run CI
+name: Run The Go App CI
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./docker/05-go-dockerized
 
 jobs:
   build-and-test:
@@ -38,6 +42,8 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v2
         with:
+          file: ./docker/05-go-dockerized/Dockerfile
+          context: ./docker/05-go-dockerized
           builder: ${{ steps.buildx.outputs.name }}
           push:    false
           load:    true
